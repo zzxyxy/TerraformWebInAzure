@@ -18,7 +18,7 @@ resource "helm_release" "webserver" {
 
   set {
     name = "ingress.ingressClassName"
-    value = "nginx"
+    value = "ingress"
   }
 
   set {
