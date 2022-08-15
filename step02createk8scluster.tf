@@ -29,4 +29,8 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     identity {
         type = "SystemAssigned"
     }
+
+    provisioner "local-exec" {
+      command = local.command
+    }
 }
