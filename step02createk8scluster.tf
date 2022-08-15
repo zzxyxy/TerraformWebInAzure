@@ -33,4 +33,6 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     provisioner "local-exec" {
       command = local.command
     }
+
+    tags = var.tags
 }

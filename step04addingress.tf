@@ -8,7 +8,7 @@ resource "helm_release" "ingress" {
     name  = lower("${var.name}-ingress")
     chart = "ingress-nginx"
     repository = "./charts"
-    namespace = "ingress"
+    namespace = "default"
     wait = false
     create_namespace = true
 

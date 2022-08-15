@@ -9,3 +9,10 @@ variable "orchestrator_version" {
   type = string
   description = "The version of the nodes in the kubernetes cluster"
 }
+variable "tags" {
+  type = map(string)
+  default = {}
+}
+variable "hostname" {
+  type = string
+}

@@ -7,4 +7,11 @@ resource "azurerm_public_ip" "fixip" {
   location = var.location
   sku = "Basic"
   allocation_method = "Static"
+
+  tags = var.tags
+}
+
+output "ipaddress" {
+    value = azurerm_public_ip.fixip.ip_address
+    sensitive = true
 }
