@@ -1,0 +1,16 @@
+argo-cd:
+  dex:
+    enabled: false
+  server:
+    extraArgs:
+      - --insecure
+    config:
+      repositories: |
+        - type: helm
+          name: argo-cd
+          url: https://argoproj.github.io/argo-helm
+    ingress:
+      enabled: true
+      ingressClassName: "ingress"
+      hosts:
+      - argocd.test.zxyxy.net
