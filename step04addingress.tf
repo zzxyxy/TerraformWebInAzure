@@ -26,8 +26,8 @@ resource "helm_release" "ingress" {
     value = "ingress"
   }
 
-  set {
-    name = "controller.ingressClassResource.name"
-    value = "ingress"
-  }
+#  set {
+#    name = "controller.ingressClassResource.name"
+#    value = "ingress"
+#  }
 }
