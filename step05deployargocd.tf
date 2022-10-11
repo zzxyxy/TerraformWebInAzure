@@ -1,4 +1,7 @@
 resource "kubernetes_namespace" "argocd" {
+  depends_on = [
+    azurerm_kubernetes_cluster.k8s
+  ]
   metadata {
     annotations = {
       name = "argo"
@@ -12,31 +15,37 @@ resource "kubernetes_namespace" "argocd" {
   }
 }
 
-data "http" "crd" {
-  url = "https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/crds/application-crd.yaml"
-  request_headers = {
-    Accept = "text/plain"
-  }
-}
-
-locals {
-  yamls = [for data in split("---", data.http.crd.body): yamldecode(data)]
-}
-
-resource "kubernetes_manifest" "install-crd" {
-  count = length(local.yamls)
-  manifest = local.yamls[count.index]
-}
-
 resource "helm_release" "argocd" {
   depends_on = [
     azurerm_kubernetes_cluster.k8s
   ]
-  name       = "argocd"
+  name  = "argocd"
+  chart = "argo-cd"
+  repository = "https://argoproj.github.io/argo-helm"
+  version    = "5.5.18"
+  namespace = "argocd"
+  wait = false
+  create_namespace = true
+  set {
+    name = "server.ingress.enabled"
+    value = true
+  }
 
-  repository = "./charts"
-  chart      = "argo-cd"
-  version    = "2.11.0"
+  set {
+    name = "server.ingress.hosts[0]"
+    value = "argocd.test.zxyxy.net"
+  }
+}
+
+resource "helm_release" "argocd-events" {
+  depends_on = [
+    azurerm_kubernetes_cluster.k8s
+  ]
+  name       = "argocd-events"
+
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argo-events"
+  version    = "2.0.5"
   namespace  = "argocd"
   create_namespace = true
 }
