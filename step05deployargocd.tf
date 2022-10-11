@@ -35,6 +35,16 @@ resource "helm_release" "argocd" {
     name = "server.ingress.hosts[0]"
     value = "argocd.test.zxyxy.net"
   }
+
+  set {
+    name = "server.ingress.ingressClassName"
+    value = "nginx"
+  }
+
+  set {
+    name = "server.extraArgs[0]"
+    value = "--insecure"
+  }
 }
 
 resource "helm_release" "argocd-events" {
